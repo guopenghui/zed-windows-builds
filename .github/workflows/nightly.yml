@@ -1,8 +1,8 @@
 name: Scheduled Nightly Build
 
 on:
-  schedule:
-    - cron: "0 0 * * *"
+  # schedule:
+  #   - cron: "0 0 * * *"
   workflow_dispatch:
 
 jobs:
@@ -20,8 +20,8 @@ jobs:
           GH_TOKEN: ${{ github.token }}
         run: |
           # Set repository and ref based on inputs
-          REPO="zed-industries/zed"
-          REF="main"
+          REPO="guopenghui/zed"
+          REF="fix-sogou-ime"
 
           # Get latest commit info
           COMMIT=$(gh api repos/$REPO/commits/$REF --jq '{sha: .sha, message: .commit.message, html_url: .html_url}')
@@ -40,6 +40,7 @@ jobs:
     needs: find_latest_commit
     uses: ./.github/workflows/build.yml
     with:
+      repository: guopenghui/zed
       ref: ${{ needs.find_latest_commit.outputs.build_ref }}
 
   trigger_release:
